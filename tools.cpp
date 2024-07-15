@@ -52,22 +52,22 @@ float calculateDTW(float seq1[][3], int n, float seq2[][3], int m) {
   // 返回最优对齐路径的距离
   return D[n % 2][m];
 }
-void print2DArray(float arr[][3], int rows) {
-  Serial.print(" = {");
-  for (int i = 0; i < rows; i++) {
-    Serial.print("{");
-    Serial.print(arr[i][0]);
-    Serial.print(", ");
-    Serial.print(arr[i][1]);
-    Serial.print(", ");
-    Serial.print(arr[i][2]);
-    Serial.print("}");
-    if (i != rows - 1) {
-      Serial.print(", ");
-    }
-  }
-  Serial.println("}");
-  Serial.println("录制完成");
-    Serial.println();
-//    ESP.wdtFeed();  // 喂狗
-}
+//void print2DArray(float arr[][3], int rows) {
+//  Serial.print(" = {");
+//  for (int i = 0; i < rows; i++) {
+//    Serial.print("{");
+//    Serial.print(arr[i][0]);
+//    Serial.print(", ");
+//    Serial.print(arr[i][1]);
+//    Serial.print(", ");
+//    Serial.print(arr[i][2]);
+//    Serial.print("}");
+//    if (i != rows - 1) {
+//      Serial.print(", ");
+//    }
+//  }
+//  Serial.println("}");
+//  Serial.println("录制完成");
+//    Serial.println();
+////    ESP.wdtFeed();  // 喂狗
+//}
