@@ -53,13 +53,9 @@ void sendData() {
     HTTPClient http;
     String serverPath = String("http://") + serverIP + ":" + String(serverPort) + "/pushData";
 
-    // Specify request destination
     http.begin(serverPath.c_str());
     http.addHeader("Content-Type", "application/json");
 
-    // Serialize JSON to string
-//    String jsonStr;
-//    serializeJson(jsonData, jsonStr);
 
     // Create JSON string manually
     String jsonStr = "{\"xyz\":[";
@@ -130,7 +126,7 @@ void print2DArray(float arr[][3], int rows);
 void setup() {
   Serial.begin(115200);
   Wire.begin(D2, D1);
-  pinMode(D3, INPUT);  // 将D3口配置为输入模式
+  pinMode(D3, INPUT);  // 将D口配置为输入模式
   mpu.begin();
 
   delay(1000);
@@ -153,27 +149,29 @@ void setup() {
 
 void loop() {
 
-  int state = digitalRead(D3);  // 读取D3口的电平状态
-  if (state == LOW) {
+
+  if (digitalRead(D3) == LOW) {
         Serial.println("按下按键");
-    while(bufferIndex<bufferSize){
-        // Serial.println("bufferIndex"+bufferIndex);
-        // Serial.println("bufferSize"+bufferSize);
-        sensors_event_t a, g, temp;
-        mpu.getEvent(&a, &g, &temp);
+        while(bufferIndex<bufferSize){
+            // Serial.println("bufferIndex"+bufferIndex);
+            // Serial.println("bufferSize"+bufferSize);
+            sensors_event_t a, g, temp;
+            mpu.getEvent(&a, &g, &temp);
 
-        float x = a.acceleration.x;
-        float y = a.acceleration.y;
-        float z = a.acceleration.z;
+            float x = a.acceleration.x;
+            float y = a.acceleration.y;
+            float z = a.acceleration.z;
 
-//        Serial.println("accX  " + String(x));
-//        Serial.println("accY  " + String(y));
-//        Serial.println("accZ  " + String(z));
-        addXyzData(x, y, z);
-        delay(10);
-    }
+    //        Serial.println("accX  " + String(x));
+    //        Serial.println("accY  " + String(y));
+    //        Serial.println("accZ  " + String(z));
+            addXyzData(x, y, z);
+            delay(10);
+        }
     sendXyzData();
 
   }
+
+
      delay(100);
 }
