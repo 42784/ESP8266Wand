@@ -51,7 +51,7 @@ void connectToWiFi() {
 void sendData() {
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
-    String serverPath = String("http://") + serverIP + ":" + String(serverPort) + "/";
+    String serverPath = String("http://") + serverIP + ":" + String(serverPort) + "/pushData";
 
     // Specify request destination
     http.begin(serverPath.c_str());
@@ -79,7 +79,7 @@ void sendData() {
       String response = http.getString();
       Serial.println(httpResponseCode); // Print return code
       Serial.println(response); // Print request answer
-      
+
     } else {
       Serial.print("Error on sending POST: ");
       Serial.println(httpResponseCode);
@@ -141,9 +141,9 @@ void setup() {
 //  ESP.wdtEnable(8000); // 8000ms = 8s
 
   // 设置加速度计的量程范围。量程越小，测量精度越高，适用于测量较小的加速度。量程越大，能测量的最大加速度越高，适用于测量较大的加速度。
-  mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
+  mpu.setAccelerometerRange(MPU6050_RANGE_4_G);
   // 设置陀螺仪的量程范围。量程越小，测量精度越高，适用于测量较小的角速度。量程越大，能测量的最大角速度越高，适用于测量较大的角速度。
-  mpu.setGyroRange(MPU6050_RANGE_500_DEG);
+  mpu.setGyroRange(MPU6050_RANGE_250_DEG);
   // 设置数字低通滤波器的带宽为21Hz。带宽越低，滤除的高频噪声越多，数据越平滑，但会引入更多的延迟。带宽越高，滤除的噪声越少，数据越敏感，但噪声也会增加。
   mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
 
@@ -157,8 +157,8 @@ void loop() {
   if (state == LOW) {
         Serial.println("按下按键");
     while(bufferIndex<bufferSize){
-        Serial.println("bufferIndex"+bufferIndex);
-        Serial.println("bufferSize"+bufferSize);
+        // Serial.println("bufferIndex"+bufferIndex);
+        // Serial.println("bufferSize"+bufferSize);
         sensors_event_t a, g, temp;
         mpu.getEvent(&a, &g, &temp);
 
