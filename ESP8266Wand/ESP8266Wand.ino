@@ -13,12 +13,12 @@ const char* ssid = "Xiaomi_D2B3";
 const char* password = "abc849849";
 
 // Server address
-const char* serverIP = "192.168.31.206";
+const char* serverIP = "192.168.31.161";
 const int serverPort = 8080;
 
 
 // Buffer for xyz data
-const int bufferSize = 100; // Buffer size for xyz data
+const int bufferSize = 200; // Buffer size for xyz data
 struct XYZ {
   float x;
   float y;
@@ -112,10 +112,6 @@ void sendXyzData() {
 }
 
 
-// 录制的数据点的数量
-int REC_POINT_NUMBER = 100;
-// 录制时长
-int REC_TIME = 1500;
 
 Adafruit_MPU6050 mpu;
 float calculateDTW(float seq1[][3], int n, float seq2[][3], int m);
@@ -125,7 +121,8 @@ void print2DArray(float arr[][3], int rows);
 
 void setup() {
   Serial.begin(115200);
-  Wire.begin(D2, D1);
+//  Wire.begin(D2, D1);
+  Wire.begin(D6, D5);
   pinMode(D3, INPUT);  // 将D口配置为输入模式
   mpu.begin();
 
@@ -166,7 +163,7 @@ void loop() {
     //        Serial.println("accY  " + String(y));
     //        Serial.println("accZ  " + String(z));
             addXyzData(x, y, z);
-            delay(10);
+            delay(2);
         }
     sendXyzData();
 

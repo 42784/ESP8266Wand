@@ -5,11 +5,11 @@
 const char* ssid = "Xiaomi_D2B3";
 const char* password = "abc849849";
 
-const char* serverUrl = "http://192.168.31.206:8080/isOpen"; 
+const char* serverUrl = "http://192.168.31.161:8080/isOpen";
 void setup() {
   Serial.begin(115200);
-  pinMode(D2, OUTPUT);
-  digitalWrite(D2, LOW); // 初始设置为低电平
+  pinMode(D3, OUTPUT);
+  digitalWrite(D3, LOW); // 初始设置为低电平
 
   ESP.wdtDisable();
 //  // Re-enable watchdog timer with a timeout of 8 seconds
@@ -48,18 +48,21 @@ void loop() {
       if (payload == "开灯") {
         if(!isOpenTheLight){
           isOpenTheLight = true;
-          digitalWrite(D2, HIGH); // 开灯，高电平
+          digitalWrite(D3, HIGH); // 开灯，高电平
+             delay(50);
+          digitalWrite(D3, HIGH); // 开灯，高电平
         }
       } else {
         if(isOpenTheLight){
           isOpenTheLight = false;
-        digitalWrite(D2, LOW); // 关灯，低电平
+         digitalWrite(D3, LOW); // 关灯，低电平
         }
       }
     } else {
-        isOpenTheLight = false;
-      Serial.println("Error on HTTP request");
-      digitalWrite(D2, LOW); // 请求失败，低电平
+        if(isOpenTheLight){
+          isOpenTheLight = false;
+          digitalWrite(D3, LOW); // 关灯，低电平
+        }
     }
 
     http.end(); // 关闭HTTP连接
@@ -68,11 +71,10 @@ void loop() {
     Serial.println("WiFi not connected");
     if(isOpenTheLight){
       isOpenTheLight = false;
-        digitalWrite(D2, LOW); // 关灯，低电平
+        digitalWrite(D3, LOW); // 关灯，低电平
     }
   }
 
-  ESP.wdtDisable();
   delay(300);
   
 }
