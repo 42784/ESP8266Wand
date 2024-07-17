@@ -5,7 +5,7 @@
 const char* ssid = "Xiaomi_D2B3";
 const char* password = "abc849849";
 
-const char* serverUrl = "http://192.168.31.161:8080/isOpen";
+const char* serverUrl = "http://192.168.31.161:4278/isOpen";
 void setup() {
   Serial.begin(115200);
   pinMode(D3, OUTPUT);
@@ -31,50 +31,35 @@ void setup() {
   Serial.println(WiFi.localIP());
 }
 bool isOpenTheLight = false;
+void closeLight(){
+    if(isOpenTheLight){
+        isOpenTheLight = false;
+        digitalWrite(D3, LOW); // 关灯，低电平
+    }
+}
+void openLight(){
+    if(!isOpenTheLight){
+        isOpenTheLight = true;
+        digitalWrite(D3, HIGH); // 开灯，高电平
+        delay(200);
+    }
+}
 void loop() {
-  if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
     http.begin(serverUrl); // 启动HTTP连接
     int httpCode = http.GET(); // 发送GET请求
-
     if (httpCode > 0) {
-      String payload = http.getString();
-      // Serial.println("HTTP Response code: ");
-      // Serial.println(httpCode);
-      // Serial.println("Payload: ");
-      // Serial.println(payload);
-      
-       delay(100);
-      if (payload == "开灯") {
-        if(!isOpenTheLight){
-          isOpenTheLight = true;
-          digitalWrite(D3, HIGH); // 开灯，高电平
-             delay(50);
-          digitalWrite(D3, HIGH); // 开灯，高电平
+        String payload = http.getString();
+        if (payload == "开灯") {
+            openLight();
+            delay(100);
+        } else {
+            closeLight();
         }
-      } else {
-        if(isOpenTheLight){
-          isOpenTheLight = false;
-         digitalWrite(D3, LOW); // 关灯，低电平
-        }
-      }
-    } else {
-        if(isOpenTheLight){
-          isOpenTheLight = false;
-          digitalWrite(D3, LOW); // 关灯，低电平
-        }
+    } else { //httpCode < 0 服务器异常
+        closeLight();
+        delay(2000);
     }
-
     http.end(); // 关闭HTTP连接
-  } else {
-     delay(150);
-    Serial.println("WiFi not connected");
-    if(isOpenTheLight){
-      isOpenTheLight = false;
-        digitalWrite(D3, LOW); // 关灯，低电平
-    }
-  }
-
-  delay(300);
-  
+    delay(300);
 }
