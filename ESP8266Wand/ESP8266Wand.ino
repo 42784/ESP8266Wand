@@ -14,7 +14,7 @@ const char* password = "abc849849";
 
 // Server address
 const char* serverIP = "192.168.31.161";
-const int serverPort = 8080;
+const int serverPort = 4278;
 
 
 // Buffer for xyz data
