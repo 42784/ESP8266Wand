@@ -5,7 +5,7 @@
 const char* ssid = "Xiaomi_D2B3";
 const char* password = "abc849849";
 
-const char* serverUrl = "http://192.168.31.161:4278/isOpen";
+const char* serverUrl = "http://192.168.31.162:4278/isOpen";
 void setup() {
   Serial.begin(115200);
   pinMode(D3, OUTPUT);
